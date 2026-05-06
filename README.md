@@ -1,1 +1,0 @@
-# actoryx_internship
