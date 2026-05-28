@@ -1,0 +1,108 @@
+=====================================================
+  TESTING YOUR MCP SERVER WITH MCP INSPECTOR
+  DG Size Calculator — Steps We Followed
+=====================================================
+
+PROJECT LOCATION
+----------------
+C:\Users\ralla\OneDrive\Desktop\actoryx_internship\week-3\week-3_project\dg-calculator
+
+
+STEP 1 — Open a terminal in the project folder
+-----------------------------------------------
+- Open the dg-calculator folder in File Explorer
+- Click on the address bar, type: cmd
+- Press Enter
+- A terminal opens already inside that folder
+
+
+STEP 2 — Go into the backend and activate the virtual environment
+-----------------------------------------------------------------
+cd backend
+.venv\Scripts\activate
+
+You know it worked when you see (.venv) at the start of the line.
+
+
+STEP 3 — Start the backend server
+----------------------------------
+python -m uvicorn app.main:app --reload --port 8000
+
+Keep this terminal open. The server runs as long as this terminal is open.
+
+
+STEP 4 — Verify the server is running
+--------------------------------------
+Open your browser and go to:
+    http://localhost:8000/health
+
+You should see:
+    {"status":"ok","interfaces":["REST /docs","MCP /mcp"]}
+
+
+STEP 5 — Open a second terminal and launch MCP Inspector
+---------------------------------------------------------
+Open a NEW terminal (same trick: address bar -> cmd -> Enter)
+Then run:
+
+    npx @modelcontextprotocol/inspector
+
+If it asks "Ok to proceed?" type y and press Enter.
+Wait until you see it running, then open your browser and go to:
+    http://localhost:6274  (or whatever port it shows)
+
+
+STEP 6 — Connect the Inspector to your MCP server
+--------------------------------------------------
+In the MCP Inspector browser page:
+1. Change Transport Type from "STDIO" to "Streamable HTTP"
+2. In the URL field type:  http://localhost:8000/mcp
+3. Click the "Connect" button
+
+You should see:
+- Green dot "Connected"
+- Your server name "dg-calculator" appear on the left
+
+
+STEP 7 — Find and list your tools
+-----------------------------------
+1. Click the "Tools" tab in the top navigation bar
+2. Click the "List Tools" button
+3. Your tool "mcp_calculate_dg" will appear
+
+
+STEP 8 — Run the tool with test values
+---------------------------------------
+Click on "mcp_calculate_dg" and fill in these values:
+
+    daily_consumption_kwh : 30
+    peak_sun_hours        : 5.5
+    system_efficiency     : 0.8
+    safety_margin         : 1.1
+    panel_wattage         : 400
+
+(This simulates a house in Hyderabad using 30 kWh/day)
+
+Click "Run Tool" and you will see the result on the right side.
+
+
+EXPECTED RESULT
+---------------
+{
+  "dg_size_kw": 7.5,
+  "panel_count": 19,
+  "daily_generation_kwh": 33.44,
+  "monthly_generation_kwh": 1003.2,
+  "annual_generation_kwh": 12208.0
+}
+
+
+=====================================================
+  QUICK REFERENCE — Ports
+=====================================================
+  Backend server  ->  http://localhost:8000
+  Health check    ->  http://localhost:8000/health
+  MCP endpoint    ->  http://localhost:8000/mcp
+  REST API docs   ->  http://localhost:8000/docs
+  MCP Inspector   ->  http://localhost:6274
+=====================================================
