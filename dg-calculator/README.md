@@ -75,3 +75,4 @@ cd backend
 pip freeze > requirements.txt
 ```
 
+https://youtu.be/JdfSKTIe3sM
